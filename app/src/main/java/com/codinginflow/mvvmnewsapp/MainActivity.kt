@@ -23,7 +23,7 @@ class MainActivity : AppCompatActivity() {
             searchNewsFragment
         )
     private var selectedIndex = 0
-    private val selectedFragment = fragments[selectedIndex]
+    private val selectedFragment get() = fragments[selectedIndex]
 
     private fun selectFragment(selectedFragment: Fragment) {
         val transaction = supportFragmentManager.beginTransaction()
@@ -36,8 +36,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
         transaction.commit()
-
-
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,7 +44,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         if (savedInstanceState == null) {
-            //here we add the fragments.
+            //here we initialize the fragments.
             breakingNewsFragment = BreakingNewsFragment()
             bookmarksFragment = BookmarksFragment()
             searchNewsFragment = SearchNewsFragment()
@@ -80,6 +78,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             selectFragment(fragment)
+            //return true if we handel the click or we passing it to the system.
             true
         }
     }
@@ -92,10 +91,9 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putInt(KEY_SELECTED_INDEX, 0)
+        outState.putInt(KEY_SELECTED_INDEX, selectedIndex)
     }
 }
 
