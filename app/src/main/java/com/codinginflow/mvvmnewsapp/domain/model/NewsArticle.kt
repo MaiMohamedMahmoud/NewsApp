@@ -1,4 +1,4 @@
-package com.codinginflow.mvvmnewsapp.network
+package com.codinginflow.mvvmnewsapp.domain.model
 
 data class NewsArticle(
     val title: String?,

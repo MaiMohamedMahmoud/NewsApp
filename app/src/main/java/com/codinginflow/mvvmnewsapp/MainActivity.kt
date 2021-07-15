@@ -7,35 +7,47 @@ import com.codinginflow.mvvmnewsapp.databinding.ActivityMainBinding
 import com.codinginflow.mvvmnewsapp.feature.bookmarks.BookmarksFragment
 import com.codinginflow.mvvmnewsapp.feature.breakingnews.BreakingNewsFragment
 import com.codinginflow.mvvmnewsapp.feature.searchnews.SearchNewsFragment
+import dagger.hilt.EntryPoint
+import dagger.hilt.android.AndroidEntryPoint
+
+@AndroidEntryPoint
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-    lateinit var breakingNewsFragment: BreakingNewsFragment
-    lateinit var bookmarksFragment: BookmarksFragment
-    lateinit var searchNewsFragment: SearchNewsFragment
 
-    // (get =) used because it will only initialize when accessed
-    //so we make sure it will be after BreakingNewsFragment is initialize.
+    private lateinit var breakingNewsFragment: BreakingNewsFragment
+    private lateinit var searchNewsFragment: SearchNewsFragment
+    private lateinit var bookmarksFragment: BookmarksFragment
+
     private val fragments: Array<Fragment>
         get() = arrayOf(
             breakingNewsFragment,
-            bookmarksFragment,
-            searchNewsFragment
+            searchNewsFragment,
+            bookmarksFragment
         )
+
     private var selectedIndex = 0
+
     private val selectedFragment get() = fragments[selectedIndex]
 
     private fun selectFragment(selectedFragment: Fragment) {
-        val transaction = supportFragmentManager.beginTransaction()
+        var transaction = supportFragmentManager.beginTransaction()
         fragments.forEachIndexed { index, fragment ->
             if (selectedFragment == fragment) {
-                transaction.attach(selectedFragment)
+                transaction = transaction.attach(fragment)
                 selectedIndex = index
             } else {
-                transaction.detach(selectedFragment)
+                transaction = transaction.detach(fragment)
             }
         }
         transaction.commit()
+
+        title = when (selectedFragment) {
+            is BreakingNewsFragment -> getString(R.string.title_breaking_news)
+            is SearchNewsFragment -> getString(R.string.title_search_news)
+            is BookmarksFragment -> getString(R.string.title_bookmarks)
+            else -> ""
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,29 +56,26 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         if (savedInstanceState == null) {
-            //here we initialize the fragments.
             breakingNewsFragment = BreakingNewsFragment()
-            bookmarksFragment = BookmarksFragment()
             searchNewsFragment = SearchNewsFragment()
+            bookmarksFragment = BookmarksFragment()
 
             supportFragmentManager.beginTransaction()
                 .add(R.id.fragment_container, breakingNewsFragment, TAG_BREAKING_NEWS_FRAGMENT)
-                .add(R.id.fragment_container, bookmarksFragment, TAG_BOOKMARK_FRAGMENT)
                 .add(R.id.fragment_container, searchNewsFragment, TAG_SEARCH_NEWS_FRAGMENT)
+                .add(R.id.fragment_container, bookmarksFragment, TAG_BOOKMARKS_FRAGMENT)
                 .commit()
-            selectFragment(selectedFragment)
         } else {
-            breakingNewsFragment = supportFragmentManager.findFragmentByTag(
-                TAG_BREAKING_NEWS_FRAGMENT
-            ) as BreakingNewsFragment
-            bookmarksFragment = supportFragmentManager.findFragmentByTag(
-                TAG_BOOKMARK_FRAGMENT
-            ) as BookmarksFragment
-            bookmarksFragment = supportFragmentManager.findFragmentByTag(
-                TAG_BOOKMARK_FRAGMENT
-            ) as BookmarksFragment
+            breakingNewsFragment =
+                supportFragmentManager.findFragmentByTag(TAG_BREAKING_NEWS_FRAGMENT) as BreakingNewsFragment
+            searchNewsFragment =
+                supportFragmentManager.findFragmentByTag(TAG_SEARCH_NEWS_FRAGMENT) as SearchNewsFragment
+            bookmarksFragment =
+                supportFragmentManager.findFragmentByTag(TAG_BOOKMARKS_FRAGMENT) as BookmarksFragment
+
             selectedIndex = savedInstanceState.getInt(KEY_SELECTED_INDEX, 0)
         }
+
         selectFragment(selectedFragment)
 
         binding.navBottom.setOnNavigationItemSelectedListener { item ->
@@ -78,7 +87,6 @@ class MainActivity : AppCompatActivity() {
             }
 
             selectFragment(fragment)
-            //return true if we handel the click or we passing it to the system.
             true
         }
     }
@@ -98,6 +106,6 @@ class MainActivity : AppCompatActivity() {
 }
 
 private const val TAG_BREAKING_NEWS_FRAGMENT = "TAG_BREAKING_NEWS_FRAGMENT"
-private const val TAG_BOOKMARK_FRAGMENT = "TAG_BOOKMARK_FRAGMENT"
 private const val TAG_SEARCH_NEWS_FRAGMENT = "TAG_SEARCH_NEWS_FRAGMENT"
+private const val TAG_BOOKMARKS_FRAGMENT = "TAG_BOOKMARKS_FRAGMENT"
 private const val KEY_SELECTED_INDEX = "KEY_SELECTED_INDEX"
