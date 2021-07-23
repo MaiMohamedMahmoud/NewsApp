@@ -6,11 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.codinginflow.mvvmnewsapp.R
 import com.codinginflow.mvvmnewsapp.databinding.FragmentBreakingNewsBinding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class BreakingNewsFragment : Fragment(R.layout.fragment_breaking_news) {
@@ -21,7 +22,7 @@ class BreakingNewsFragment : Fragment(R.layout.fragment_breaking_news) {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentBreakingNewsBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -33,9 +34,11 @@ class BreakingNewsFragment : Fragment(R.layout.fragment_breaking_news) {
     }
 
     private fun setObservables() {
-        breakingNewsViewModel.breakingNewsLiveDataDto.observe(viewLifecycleOwner, Observer {
-            breakingNewsAdapter.submitList(it)
-        })
+        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+            breakingNewsViewModel.breakingNewsFlow.collect { articles ->
+                breakingNewsAdapter.submitList(articles)
+            }
+        }
     }
 
     private fun setRecycleView() {
@@ -44,5 +47,4 @@ class BreakingNewsFragment : Fragment(R.layout.fragment_breaking_news) {
         binding.recyclerView.layoutManager = manager
         binding.recyclerView.adapter = breakingNewsAdapter
     }
-
 }

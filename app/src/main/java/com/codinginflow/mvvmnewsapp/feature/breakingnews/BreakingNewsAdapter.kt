@@ -5,19 +5,18 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.codinginflow.mvvmnewsapp.data.network.NewsArticleDto
 import com.codinginflow.mvvmnewsapp.databinding.FragmentBreakingNewsItemBinding
+import com.codinginflow.mvvmnewsapp.domain.model.Article
 
 class BreakingNewsAdapter :
-    ListAdapter<NewsArticleDto, BreakingNewsAdapter.BreakingNewsViewHolder>(DiffCallback()) {
+    ListAdapter<Article, BreakingNewsAdapter.BreakingNewsViewHolder>(DiffCallback()) {
 
     class BreakingNewsViewHolder(private val bind: FragmentBreakingNewsItemBinding) :
         RecyclerView.ViewHolder(bind.root) {
 
-        fun bindView(newsArticleDto: NewsArticleDto) {
-            bind.newsArticleObj = newsArticleDto
+        fun bindView(article: Article) {
+            bind.newsArticleObj = article
         }
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BreakingNewsViewHolder {
@@ -37,12 +36,18 @@ class BreakingNewsAdapter :
     }
 
 
-    class DiffCallback : DiffUtil.ItemCallback<NewsArticleDto>() {
-        override fun areItemsTheSame(oldItem: NewsArticleDto, newItem: NewsArticleDto): Boolean {
-            return oldItem.url == newItem.url
+    class DiffCallback : DiffUtil.ItemCallback<Article>() {
+        override fun areItemsTheSame(
+            oldItem: Article,
+            newItem: Article
+        ): Boolean {
+            return oldItem.thumbnailUrl == newItem.thumbnailUrl
         }
 
-        override fun areContentsTheSame(oldItem: NewsArticleDto, newItem: NewsArticleDto): Boolean {
+        override fun areContentsTheSame(
+            oldItem: Article,
+            newItem: Article
+        ): Boolean {
             return oldItem == newItem
         }
 

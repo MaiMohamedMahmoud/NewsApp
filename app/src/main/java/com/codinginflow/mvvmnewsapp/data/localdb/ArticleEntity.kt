@@ -5,11 +5,11 @@ import androidx.room.PrimaryKey
 
 
 @Entity(tableName = "news_articles")
-data class NewsArticleEntity(
+data class ArticleEntity(
     val title: String?,
     @PrimaryKey val url: String,
     val thumbnailUrl: String?,
     val isBookmarked: Boolean,
-    val isBreakNews:Boolean,
+    val isBreakNews: Boolean,
     val updatedAt: Long = System.currentTimeMillis()
 )
