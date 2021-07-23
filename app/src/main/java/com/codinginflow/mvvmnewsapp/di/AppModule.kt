@@ -2,9 +2,8 @@ package com.codinginflow.mvvmnewsapp.di
 
 import android.app.Application
 import androidx.room.Room
-import androidx.room.RoomDatabase
 import com.codinginflow.mvvmnewsapp.data.localdb.NewsArticleDatabase
-import com.codinginflow.mvvmnewsapp.data.network.NewsApi
+import com.codinginflow.mvvmnewsapp.data.newsorg.NewsApi
 import com.codinginflow.mvvmnewsapp.data.repository.NewsRepository
 import com.codinginflow.mvvmnewsapp.domain.usecase.BreakingNewsUseCase
 import com.google.gson.Gson

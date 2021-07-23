@@ -1,4 +1,4 @@
-package com.codinginflow.mvvmnewsapp.data.network
+package com.codinginflow.mvvmnewsapp.data.newsorg
 
 import com.codinginflow.mvvmnewsapp.BuildConfig
 import retrofit2.http.GET
@@ -16,7 +16,7 @@ interface NewsApi {
     suspend fun getBreakingNews(
         @Query("country") country: String,
         @Query("pageSize") pageSize: Int
-    ): NewsArticleResponse
+    ): NewsResponse
 
     @Headers("X-Api-Key: $API_KEY")
     @GET("everything")
@@ -24,6 +24,6 @@ interface NewsApi {
         @Query("q") query: String,
         @Query("page") page: Int,
         @Query("pageSize") pageSize: Int
-    ): NewsArticleResponse
+    ): NewsResponse
 
 }

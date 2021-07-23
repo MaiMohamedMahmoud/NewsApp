@@ -10,15 +10,15 @@ import kotlinx.coroutines.flow.Flow
 interface NewsDao {
 
     @Query("Select * from news_articles where isBreakNews = 1")
-    fun getBreakingNews(): Flow<NewsArticleEntity>
+    fun getBreakingNews(): Flow<ArticleEntity>
 
     @Query("Select * from news_articles where isBookmarked = 1 ")
-    fun getBookMarkedNews(): Flow<NewsArticleEntity>
+    fun getBookMarkedNews(): Flow<ArticleEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertBreakingNews(breakingNewsList: List<NewsArticleEntity>)
+    fun insertBreakingNews(breakingNewsList: List<ArticleEntity>)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertNews(NewsList: List<NewsArticleEntity>)
+    fun insertNews(NewsList: List<ArticleEntity>)
 
 }

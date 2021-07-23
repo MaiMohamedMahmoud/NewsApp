@@ -5,10 +5,12 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="newsArticleObj"
-            type="com.codinginflow.mvvmnewsapp.data.network.NewsArticleDto" />
+            type="com.codinginflow.mvvmnewsapp.domain.model.Article" />
     </data>
+
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -23,22 +25,33 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+
             <ImageView
-                android:id="@+id/play_icon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:imageUrl="@{newsArticleObj.urlToImage}"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:id="@+id/news_image"
+                android:layout_width="0dp"
+                android:layout_height="250dp"
+                android:scaleType="centerCrop"
+                app:imageUrl="@{newsArticleObj.thumbnailUrl}"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:src="@drawable/ic_launcher_foreground" />
+
+            <ImageView
+                android:id="@+id/image_view_bookmark"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_margin="8dp"
+                android:src="@drawable/ic_bookmark_unselected"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/left_well"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layout_constraintGuide_begin="36dp" />
+                app:layout_constraintGuide_begin="16dp" />
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/right_well"
@@ -57,26 +70,12 @@
                 android:textAlignment="viewStart"
                 android:textAllCaps="false"
                 android:textStyle="bold"
-                app:layout_constraintEnd_toStartOf="@+id/right_well"
-                app:layout_constraintStart_toEndOf="@+id/play_icon"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="Product name" />
-
-            <TextView
-                android:id="@+id/description"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
                 android:layout_marginBottom="16dp"
-                android:text="@{newsArticleObj.title}"
-                android:textAlignment="viewStart"
-                android:textAllCaps="false"
-                android:textSize="14sp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/right_well"
-                app:layout_constraintStart_toStartOf="@+id/title"
-                app:layout_constraintTop_toBottomOf="@+id/title"
-                tools:text="@string/app_name" />
+                app:layout_constraintEnd_toStartOf="@+id/right_well"
+                app:layout_constraintStart_toStartOf="@+id/left_well"
+                app:layout_constraintTop_toBottomOf="@+id/news_image" />
+
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
