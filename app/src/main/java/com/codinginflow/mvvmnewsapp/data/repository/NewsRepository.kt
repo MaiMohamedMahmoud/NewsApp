@@ -1,5 +1,6 @@
 package com.codinginflow.mvvmnewsapp.data.repository
 
+import android.util.Log
 import com.codinginflow.mvvmnewsapp.data.localdb.ArticleEntity
 import com.codinginflow.mvvmnewsapp.data.localdb.NewsArticleDatabase
 import com.codinginflow.mvvmnewsapp.data.localdb.NewsDao
@@ -19,6 +20,7 @@ class NewsRepository @Inject constructor(
 ) {
     private val newsDao = newsDb.newsArticleDao()
     fun getBreakingNews(): Flow<Resource<List<Article>>> {
+        Log.i("yarab", "inside repo")
         return performGetOperation(
             databaseQuery = {
                 newsDao.getBreakingNews().map { it.asDomainModel() }

@@ -14,8 +14,8 @@ import javax.inject.Inject
 @HiltViewModel
 class BreakingNewsViewModel @Inject constructor(private val breakingNewsUseCase: BreakingNewsUseCase) :
     ViewModel() {
-
     val breakingNewsList = breakingNewsUseCase.getBreakingNews()
+
 
 //    private val breakingNewsMutableFlow: MutableStateFlow<List<Article>> =
 //        MutableStateFlow(emptyList())
