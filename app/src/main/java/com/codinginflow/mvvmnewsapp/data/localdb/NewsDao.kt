@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.Flow
 interface NewsDao {
 
     @Query("Select * from news_articles where isBreakNews = 1")
-    fun getBreakingNews(): Flow<ArticleEntity>
+    fun getBreakingNews(): Flow<List<ArticleEntity>>
 
     @Query("Select * from news_articles where isBookmarked = 1 ")
     fun getBookMarkedNews(): Flow<ArticleEntity>

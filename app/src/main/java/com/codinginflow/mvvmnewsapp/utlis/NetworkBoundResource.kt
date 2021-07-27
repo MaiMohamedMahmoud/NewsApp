@@ -2,8 +2,8 @@ package com.codinginflow.mvvmnewsapp.utlis
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.flow
 
 //Request is the type of response Api
 //Result is the type using in UI.
@@ -11,16 +11,23 @@ fun <Result, Request> performGetOperation(
     databaseQuery: () -> Flow<Result>,
     networkCall: suspend () -> Request,
     saveCallResult: suspend (Request) -> Unit
-):Flow<Result> = channelFlow {
+) = channelFlow {
     val databaseResult = databaseQuery().first()
-    send(databaseResult)
-    try{
-        saveCallResult(networkCall())
-    }catch (error:Exception){
 
+    val loading = databaseQuery().collect {
+
+        send(Resource.Loading(it))
     }
-
-
+    try {
+        saveCallResult(networkCall())
+        databaseQuery().collect {
+            send(Resource.Success(it))
+        }
+    } catch (error: Exception) {
+        databaseQuery().collect {
+            send(Resource.Error(error, it))
+        }
+    }
 
 
 }
