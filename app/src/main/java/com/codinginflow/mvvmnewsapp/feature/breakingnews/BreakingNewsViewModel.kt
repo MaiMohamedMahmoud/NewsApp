@@ -15,22 +15,24 @@ import javax.inject.Inject
 class BreakingNewsViewModel @Inject constructor(private val breakingNewsUseCase: BreakingNewsUseCase) :
     ViewModel() {
 
-    private val breakingNewsMutableFlow: MutableStateFlow<List<Article>> =
-        MutableStateFlow(emptyList())
-    val breakingNewsFlow: StateFlow<List<Article>>
-        get() = breakingNewsMutableFlow
+    val breakingNewsList = breakingNewsUseCase.getBreakingNews()
 
-
-    init {
-        Log.i("yarab", "Here is model load")
-        loadAllBreakingNews()
-    }
-
-    private fun loadAllBreakingNews() {
-        viewModelScope.launch {
-            val breakingNewsList = breakingNewsUseCase.getBreakingNews()
-            breakingNewsMutableFlow.value = breakingNewsList
-        }
-
-    }
+//    private val breakingNewsMutableFlow: MutableStateFlow<List<Article>> =
+//        MutableStateFlow(emptyList())
+//    val breakingNewsFlow: StateFlow<List<Article>>
+//        get() = breakingNewsMutableFlow
+//
+//
+//    init {
+//
+//        loadAllBreakingNews()
+//    }
+//
+//    private fun loadAllBreakingNews() {
+//        viewModelScope.launch {
+//            val breakingNewsList = breakingNewsUseCase.getBreakingNews()
+//            breakingNewsMutableFlow.value = breakingNewsList
+//        }
+//
+//    }
 }

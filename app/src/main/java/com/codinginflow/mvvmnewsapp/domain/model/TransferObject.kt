@@ -1,6 +1,5 @@
 package com.codinginflow.mvvmnewsapp.domain.model
 
-import androidx.room.PrimaryKey
 import com.codinginflow.mvvmnewsapp.data.localdb.ArticleEntity
 import com.codinginflow.mvvmnewsapp.data.newsorg.ArticlesResponse
 
