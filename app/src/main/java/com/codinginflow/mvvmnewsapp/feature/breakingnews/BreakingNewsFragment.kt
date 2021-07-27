@@ -10,6 +10,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.codinginflow.mvvmnewsapp.R
 import com.codinginflow.mvvmnewsapp.databinding.FragmentBreakingNewsBinding
+import com.codinginflow.mvvmnewsapp.utlis.Resource
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 
@@ -35,8 +36,8 @@ class BreakingNewsFragment : Fragment(R.layout.fragment_breaking_news) {
 
     private fun setObservables() {
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-            breakingNewsViewModel.breakingNewsFlow.collect { articles ->
-                breakingNewsAdapter.submitList(articles)
+            breakingNewsViewModel.breakingNewsList.collect { articles ->
+                breakingNewsAdapter.submitList(articles.data)
             }
         }
     }

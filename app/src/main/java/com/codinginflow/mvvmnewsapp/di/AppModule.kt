@@ -1,8 +1,10 @@
 package com.codinginflow.mvvmnewsapp.di
 
 import android.app.Application
+import android.content.Context
 import androidx.room.Room
 import com.codinginflow.mvvmnewsapp.data.localdb.NewsArticleDatabase
+import com.codinginflow.mvvmnewsapp.data.localdb.NewsDao
 import com.codinginflow.mvvmnewsapp.data.newsorg.NewsApi
 import com.codinginflow.mvvmnewsapp.data.repository.NewsRepository
 import com.codinginflow.mvvmnewsapp.domain.usecase.BreakingNewsUseCase
@@ -11,6 +13,7 @@ import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -48,14 +51,18 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideNewsDatabase(app: Application): NewsArticleDatabase =
-        Room.databaseBuilder(app, NewsArticleDatabase::class.java, "news_database")
-            .fallbackToDestructiveMigration().build()
+    fun provideNewsDatabase(@ApplicationContext app: Context): NewsArticleDatabase =
+        NewsArticleDatabase.getDatabase(app)
+
+
+    @Singleton
+    @Provides
+    fun provideNewsDao(db: NewsArticleDatabase): NewsDao = db.newsArticleDao()
+
 
     @Provides
-    fun provideNewsRepository(newsApi: NewsApi): NewsRepository =
-        NewsRepository(newsApi)
-
+    fun provideNewsRepository(newsDb: NewsArticleDatabase, newsApi: NewsApi): NewsRepository =
+        NewsRepository(newsDb, newsApi)
 
     @Provides
     fun provideUseCase(repository: NewsRepository): BreakingNewsUseCase =
